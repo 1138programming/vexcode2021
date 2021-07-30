@@ -67,7 +67,7 @@ void pre_auton( void ){
   // set drive to 100%
   Drivetrain.setDriveVelocity(100, percent);
   Arm.setVelocity(75,percent); 
-  Intake.setVelocity(75,percent); 
+  Intake.setVelocity(85,percent); 
   Lift.setVelocity(100,percent); 
 
   // start auto tasks here
@@ -139,11 +139,11 @@ void usercontrol( void ){
     }
 
     // ################### Arm Control ###############################################
-    if (abs(Controller1.Axis2.value())>5){
-      Arm.spin(forward, 50, percent);
-    }
-    else if(Controller1.ButtonB.pressing()){
+    if (Controller1.Axis2.value()>5){
       Arm.spin(reverse, 50, percent);
+    }
+    else if(Controller1.Axis2.value()<-5){
+      Arm.spin(forward, 50, percent);
     }
     else {
       Arm.stop(brake);
@@ -151,10 +151,10 @@ void usercontrol( void ){
     
     // ################### Intake Control ###############################################
     if(Controller1.ButtonL2.pressing()){
-      Intake.spin(forward, 75, percent);
+      Intake.spin(forward, 85, percent);
     }
     else if(Controller1.ButtonL1.pressing()){
-      Intake.spin(reverse, 75, percent);
+      Intake.spin(reverse, 85, percent);
     }
     else {
       Intake.stop(brake);
@@ -221,7 +221,7 @@ int tMyTasks(){ // Manage user automated tasks
 int tDrive(){
   while(1){ 
   // Activate drive motors
-  if (abs(Controller1.Axis4.value())>5 || abs(Controller1.Axis3.value())>5){
+  if ((abs(Controller1.Axis4.value())>1 || abs(Controller1.Axis3.value())>1) || (Controller1.Axis4.value()<-1 || Controller1.Axis3.value()<-1)){
     bDriveBrake = true;
     iVisionState = 10; // turns off vision code
 
